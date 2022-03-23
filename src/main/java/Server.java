@@ -4,8 +4,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Server implements Runnable{
-    private BlockingQueue<Client> q = new ArrayBlockingQueue<Client>(10);
-    private AtomicInteger waitingPeriod;
+    private BlockingQueue<Client> q = new ArrayBlockingQueue<Client>(1000);
+    private AtomicInteger waitingPeriod=new AtomicInteger();
 
     public Server(){
         waitingPeriod.set(0);
@@ -38,7 +38,7 @@ public class Server implements Runnable{
     }
 
     public String toString(int i){
-        String s="Queue"+String.valueOf(i)+": ";
+        String s="Queue"+String.valueOf(i+1)+": ";
         for (Client c:q) {
             s+=c.toString();
         }

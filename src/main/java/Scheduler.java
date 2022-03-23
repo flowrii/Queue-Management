@@ -1,7 +1,8 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Scheduler {
-    private List<Server> servers;
+    private List<Server> servers=new ArrayList<>();
     private int maxNoServers;
 
     public Scheduler(int maxNoServers){

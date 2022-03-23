@@ -4,7 +4,7 @@ import javax.swing.*;
 public class SimulationFrame extends JFrame{
 
     private int nbOfQueues;
-    private JTextArea vw = new JTextArea(nbOfQueues,100);
+    private JTextArea vw = new JTextArea(30,130);
 
     public String getVwText() {
         return vw.getText();

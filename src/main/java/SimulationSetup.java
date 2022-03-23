@@ -67,6 +67,8 @@ class SimulationSetup extends JFrame {
     void showSim(){
         setVisible(false);
         frame.setVisible(true);
+        Thread t = new Thread(manager);
+        t.start();
     }
 
     String getTimeLimit() {

@@ -36,9 +36,8 @@ public class SimulationManager implements Runnable {
                 numberOfClients = Integer.parseInt(setup.getNumberOfClients());
                 scheduler = new Scheduler(numberOfServers);
                 generateNRandomClients();
-                showClients();
-                setup.showSim();
                 setup.frame.setNbOfQueues(numberOfServers);
+                setup.showSim();
             } catch (NumberFormatException ex) {
                 setup.showError("Verificati datele introduse");
                 setup.setVisible(true);
@@ -61,23 +60,17 @@ public class SimulationManager implements Runnable {
 
     @Override
     public void run() {
-        try {
-            Thread.sleep(20000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        System.out.println("AICI");
         int currentTime = 0;
         while (currentTime < timeLimit) {
-            System.out.println("Am ajuns");
             for (int i = 0; i < generatedClients.size(); i++) {
                 Client c = generatedClients.get(i);
                 if (c.gettArrival() == currentTime) {
                     scheduler.getMinWaitT().addClient(c);
                     generatedClients.remove(c);
+                    i--;
                 }
             }
-            System.out.println(this.getText());
+            setup.frame.setVwText("Time:"+currentTime+"\n"+this.getText());
             currentTime++;
             try {
                 Thread.sleep(1000);
@@ -85,11 +78,12 @@ public class SimulationManager implements Runnable {
                 e.printStackTrace();
             }
         }
+        //Thread.interrupted()
     }
 
     public String getText() {
         String s="";
-        s = this.showClients() + "\n";
+        s = this.showClients() + "\n\n";
         for (Server server : scheduler.getServers()) {
             s += server.toString(scheduler.getServers().indexOf(server));
         }
