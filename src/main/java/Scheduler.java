@@ -5,6 +5,8 @@ public class Scheduler {
     private List<Server> servers=new ArrayList<>();
     private int maxNoServers;
 
+    private List<Thread> threads=new ArrayList<>();
+
     public Scheduler(int maxNoServers){
         this.maxNoServers=maxNoServers;
 
@@ -13,6 +15,7 @@ public class Scheduler {
             Server s=new Server();
             servers.add(s);
             Thread t=new Thread(s);
+            threads.add(t);
             t.start();
         }
     }
@@ -43,5 +46,19 @@ public class Scheduler {
 
     public void setMaxNoServers(int maxNoServers) {
         this.maxNoServers = maxNoServers;
+    }
+
+    public void interruptThreads(){
+        for (Thread t:threads) {
+            t.interrupt();
+        }
+    }
+
+    public boolean checkIfThereAreClients(){
+        for (Server s:servers) {
+            if(!s.getQ().isEmpty())
+                return true;
+        }
+        return false;
     }
 }

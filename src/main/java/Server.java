@@ -39,6 +39,9 @@ public class Server implements Runnable{
 
     public String toString(int i){
         String s="Queue"+String.valueOf(i+1)+": ";
+        if(q.isEmpty()){
+            s+="closed";
+        }
         for (Client c:q) {
             s+=c.toString();
         }
@@ -61,7 +64,7 @@ public class Server implements Runnable{
                 }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                Thread.currentThread().interrupt();
             }
         }
     }
