@@ -61,4 +61,12 @@ public class Scheduler {
         }
         return false;
     }
+
+    public int unservedClientsInQ(){
+        for (Server s:servers) {
+            if(s.getQ().size()>1)
+                return s.getQ().size()-1;
+        }
+        return 0;
+    }
 }

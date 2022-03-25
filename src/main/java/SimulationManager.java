@@ -109,9 +109,26 @@ public class SimulationManager implements Runnable {
     public int remainingWaitingTime(Scheduler scheduler){
         int time=0;
         for (Server s:scheduler.getServers()) {
+            int ct=0;
             if(!s.getQ().isEmpty()){
                 for (Client c:s.getQ()) {
-                   time+=c.gettService();
+                    if(s.getQ().size()==1)
+                        time+=c.gettService();
+                    else
+                        time+=c.gettService()*(s.getQ().size()-ct);
+                    ct++;
+                }
+            }
+        }
+        return time;
+    }
+
+    public int remainingServiceTime(Scheduler scheduler){
+        int time=0;
+        for (Server s:scheduler.getServers()) {
+            if(!s.getQ().isEmpty()){
+                for (Client c:s.getQ()) {
+                    time+=c.gettService();
                 }
             }
         }
@@ -127,15 +144,16 @@ public class SimulationManager implements Runnable {
             e.printStackTrace();
         }
         int currentTime = 0, clientsInQueues=0;
-        double avgWaitingTime=0;
+        double avgWaitingTime=0, avgServiceTime=0;
         while (currentTime < timeLimit) {
-            if (generatedClients.isEmpty() && scheduler.checkIfThereAreClients()==false)
+            if (generatedClients.isEmpty() && !scheduler.checkIfThereAreClients())
                 break;
             for (int i = 0; i < generatedClients.size(); i++) {
                 Client c = generatedClients.get(i);
                 if (c.gettArrival() == currentTime) {
                     avgWaitingTime+=scheduler.getMinWaitT().getWaitingPeriod().get()+c.gettService();
                     scheduler.getMinWaitT().addClient(c);
+                    avgServiceTime+=c.gettService();
                     clientsInQueues++;
                     generatedClients.remove(c);
                     i--;
@@ -157,17 +175,17 @@ public class SimulationManager implements Runnable {
         }
         if(scheduler.checkIfThereAreClients()){
             avgWaitingTime-=remainingWaitingTime(scheduler);
+            avgServiceTime-=remainingServiceTime(scheduler);
         }
         avgWaitingTime/=clientsInQueues*1.0;
-
-        String deScris="Time:"+currentTime+"\n"+this.getText()+"\n\nAverage waiting time: "+avgWaitingTime;
+        avgServiceTime/=(clientsInQueues-scheduler.unservedClientsInQ())*1.0;
+        String deScris="Time:"+currentTime+"\n"+this.getText()+"\n\nAverage waiting time: "+avgWaitingTime+"\nAverage service time: "+avgServiceTime;
         setup.frame.setVwText(deScris);
         try {
             writeToTxt("\n"+deScris, f1);
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         Thread.interrupted(); scheduler.interruptThreads();
     }
 
