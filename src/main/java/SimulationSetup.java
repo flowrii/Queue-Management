@@ -4,19 +4,19 @@ import java.awt.event.*;
 
 class SimulationSetup extends JFrame {
 
-    private JTextField timeLimit = new JTextField(5);
-    private JTextField maxProcessingTime = new JTextField(10);
-    private JTextField minProcessingTime = new JTextField(10);
-    private JTextField maxArrivalTime = new JTextField(10);
-    private JTextField minArrivalTime = new JTextField(10);
-    private JTextField numberOfServers = new JTextField(10);
-    private JTextField numberOfClients = new JTextField(10);
+    private final JTextField timeLimit = new JTextField(5);
+    private final JTextField maxProcessingTime = new JTextField(10);
+    private final JTextField minProcessingTime = new JTextField(10);
+    private final JTextField maxArrivalTime = new JTextField(10);
+    private final JTextField minArrivalTime = new JTextField(10);
+    private final JTextField numberOfServers = new JTextField(10);
+    private final JTextField numberOfClients = new JTextField(10);
 
-    private JButton start = new JButton("Start");
+    private final JButton start = new JButton("Start");
 
     SimulationManager manager;
 
-    SimulationFrame frame=new SimulationFrame(manager);
+    SimulationFrame frame=new SimulationFrame();
 
     SimulationSetup(SimulationManager manager) {
 

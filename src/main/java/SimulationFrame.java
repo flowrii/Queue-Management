@@ -3,26 +3,17 @@ import javax.swing.*;
 
 public class SimulationFrame extends JFrame{
 
-    private int nbOfQueues;
-    private JTextArea vw = new JTextArea(30,130);
-
-    public String getVwText() {
-        return vw.getText();
-    }
+    private final JTextArea vw = new JTextArea(30,133);
 
     public void setVwText(String string) {
         this.vw.setText(string);
     }
 
-    public void setNbOfQueues(int nbOfQueues) {
-        this.nbOfQueues = nbOfQueues;
-    }
-
-    SimulationFrame(SimulationManager manager)
+    SimulationFrame()
     {
         JPanel content = new JPanel();
         content.setLayout(new FlowLayout());
-        this.setMinimumSize(new Dimension(1500,700));
+        this.setMinimumSize(new Dimension(1500,550));
 
         vw.setLineWrap(true);
         vw.setWrapStyleWord(true);
@@ -30,7 +21,6 @@ public class SimulationFrame extends JFrame{
 
         JScrollPane scroll = new JScrollPane (vw,
                 JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
 
         //content.add(vw);
         content.add(scroll);

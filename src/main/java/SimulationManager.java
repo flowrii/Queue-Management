@@ -17,7 +17,7 @@ public class SimulationManager implements Runnable {
 
     private Scheduler scheduler;
     private SimulationSetup setup;
-    private List<Client> generatedClients = new ArrayList<Client>();
+    private List<Client> generatedClients = new ArrayList<>();
 
     public SimulationManager() {
         setup = new SimulationSetup(this);
@@ -43,12 +43,11 @@ public class SimulationManager implements Runnable {
                     else {
                         scheduler = new Scheduler(numberOfServers);
                         generateNRandomClients();
-                        setup.frame.setNbOfQueues(numberOfServers);
                         setup.showSim();
                     }
                 }
             } catch (NumberFormatException ex) {
-                setup.showError("Verificati datele introduse");
+                setup.showError("Verificati datele introduse! Asigurati-vă că valorile introduse sunt numere întregi, pozitive!");
                 setup.setVisible(true);
             }
         }
@@ -76,7 +75,7 @@ public class SimulationManager implements Runnable {
     }
 
     public String getText() {
-        String s="";
+        String s;
         s = this.showClients() + "\n\n";
         for (Server server : scheduler.getServers()) {
             s += server.toString(scheduler.getServers().indexOf(server));
@@ -143,7 +142,7 @@ public class SimulationManager implements Runnable {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
-        int currentTime = 0, clientsInQueues=0;
+        int currentTime = 0, clientsInQueues=0, peakH=0, peakNbOfC=0;
         double avgWaitingTime=0, avgServiceTime=0;
         while (currentTime < timeLimit) {
             if (generatedClients.isEmpty() && !scheduler.checkIfThereAreClients())
@@ -153,6 +152,10 @@ public class SimulationManager implements Runnable {
                 if (c.gettArrival() == currentTime) {
                     avgWaitingTime+=scheduler.getMinWaitT().getWaitingPeriod().get()+c.gettService();
                     scheduler.getMinWaitT().addClient(c);
+                    if(scheduler.howManyClients()>peakNbOfC){
+                        peakNbOfC=scheduler.howManyClients();
+                        peakH=currentTime;
+                    }
                     avgServiceTime+=c.gettService();
                     clientsInQueues++;
                     generatedClients.remove(c);
@@ -179,7 +182,7 @@ public class SimulationManager implements Runnable {
         }
         avgWaitingTime/=clientsInQueues*1.0;
         avgServiceTime/=(clientsInQueues-scheduler.unservedClientsInQ())*1.0;
-        String deScris="Time:"+currentTime+"\n"+this.getText()+"\n\nAverage waiting time: "+avgWaitingTime+"\nAverage service time: "+avgServiceTime;
+        String deScris="Time:"+currentTime+"\n"+this.getText()+"\n\nAverage waiting time: "+avgWaitingTime+"\nAverage service time: "+avgServiceTime+"\nPeak hour: "+peakH+" --> "+peakNbOfC+" clients";
         setup.frame.setVwText(deScris);
         try {
             writeToTxt("\n"+deScris, f1);

@@ -1,10 +1,9 @@
-import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Server implements Runnable{
-    private BlockingQueue<Client> q = new ArrayBlockingQueue<Client>(1000);
+    private BlockingQueue<Client> q = new ArrayBlockingQueue<>(500);
     private AtomicInteger waitingPeriod=new AtomicInteger();
 
     public Server(){
@@ -15,16 +14,8 @@ public class Server implements Runnable{
         return q;
     }
 
-    public void setQ(BlockingQueue<Client> q) {
-        this.q = q;
-    }
-
     public AtomicInteger getWaitingPeriod() {
         return waitingPeriod;
-    }
-
-    public void setWaitingPeriod(AtomicInteger waitingPeriod) {
-        this.waitingPeriod = waitingPeriod;
     }
 
     public void addClient(Client newClient){
@@ -38,7 +29,7 @@ public class Server implements Runnable{
     }
 
     public String toString(int i){
-        String s="Queue"+String.valueOf(i+1)+": ";
+        String s="   #Queue"+ (i + 1) +": ";
         if(q.isEmpty()){
             s+="closed";
         }
@@ -64,7 +55,8 @@ public class Server implements Runnable{
                 }
                 Thread.sleep(1000);
             } catch (InterruptedException e) {
-                //e.printStackTrace();
+                System.out.println("Intrerupt");
+                return;
             }
         }
     }

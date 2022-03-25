@@ -2,15 +2,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Scheduler {
-    private List<Server> servers=new ArrayList<>();
-    private int maxNoServers;
+    private final List<Server> servers=new ArrayList<>();
 
-    private List<Thread> threads=new ArrayList<>();
+    private final List<Thread> threads=new ArrayList<>();
 
-    public Scheduler(int maxNoServers){
-        this.maxNoServers=maxNoServers;
+    public Scheduler(int nbServers){
 
-        for(int i=0;i<maxNoServers;i++)
+        for(int i=0;i<nbServers;i++)
         {
             Server s=new Server();
             servers.add(s);
@@ -36,18 +34,6 @@ public class Scheduler {
         return servers;
     }
 
-    public void setServers(List<Server> servers) {
-        this.servers = servers;
-    }
-
-    public int getMaxNoServers() {
-        return maxNoServers;
-    }
-
-    public void setMaxNoServers(int maxNoServers) {
-        this.maxNoServers = maxNoServers;
-    }
-
     public void interruptThreads(){
         for (Thread t:threads) {
             t.interrupt();
@@ -68,5 +54,14 @@ public class Scheduler {
                 return s.getQ().size()-1;
         }
         return 0;
+    }
+
+    public int howManyClients(){
+        int ct=0;
+        for (Server s:servers) {
+            if(!s.getQ().isEmpty())
+                ct+= s.getQ().size();
+        }
+        return ct;
     }
 }
