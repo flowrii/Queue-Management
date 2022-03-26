@@ -57,8 +57,8 @@ public class SimulationManager implements Runnable {
         for (int i = 1; i <= this.numberOfClients; i++) {
             Client c = new Client();
             c.setId(i);
-            int tSrv = (int) (minProcessingTime + Math.random() * (maxProcessingTime - minProcessingTime));
-            int tArv = (int) (minArrivalTime + Math.random() * (maxArrivalTime - minArrivalTime));
+            int tSrv = (int) (minProcessingTime + Math.random() * (maxProcessingTime - minProcessingTime +1));
+            int tArv = (int) (minArrivalTime + Math.random() * (maxArrivalTime - minArrivalTime +1));
             c.settArrival(tArv);
             c.settService(tSrv);
             generatedClients.add(c);
