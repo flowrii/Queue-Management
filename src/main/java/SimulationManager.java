@@ -189,7 +189,7 @@ public class SimulationManager implements Runnable {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Thread.interrupted(); scheduler.interruptThreads();
+        Thread.currentThread().interrupt(); scheduler.interruptThreads();
     }
 
 }
