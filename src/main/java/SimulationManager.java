@@ -152,6 +152,8 @@ public class SimulationManager implements Runnable {
                 if (c.gettArrival() == currentTime) {
                     avgWaitingTime+=scheduler.getMinWaitT().getWaitingPeriod().get()+c.gettService();
                     scheduler.getMinWaitT().addClient(c);
+                    //avgWaitingTime+=scheduler.getMinNbOfClients().getWaitingPeriod().get()+c.gettService();
+                    //scheduler.getMinNbOfClients().addClient(c);
                     if(scheduler.howManyClients()>peakNbOfC){
                         peakNbOfC=scheduler.howManyClients();
                         peakH=currentTime;

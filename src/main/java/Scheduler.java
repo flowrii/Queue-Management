@@ -18,6 +18,18 @@ public class Scheduler {
         }
     }
 
+    public Server getMinNbOfClients(){
+        int mini=servers.get(0).getQ().size();
+        Server minS=servers.get(0);
+        for (Server s:servers) {
+            if(s.getQ().size()<mini){
+                mini=s.getQ().size();
+                minS=s;
+            }
+        }
+        return minS;
+    }
+
     public Server getMinWaitT(){
         int mini=servers.get(0).getWaitingPeriod().get();
         Server minS=servers.get(0);
